@@ -7,9 +7,10 @@ import (
 	"os"
 	"slices"
 
+	"github.com/kubewarden/runtime-enforcer/api/v1alpha1"
+	agentv1 "github.com/kubewarden/runtime-enforcer/proto/agent/v1"
 	"github.com/neuvector/neuvector-runtime-enforcer-policy-converter/internal/converter"
 	v1 "github.com/neuvector/neuvector/controller/k8sapi/v1"
-	"github.com/rancher-sandbox/runtime-enforcer/api/v1alpha1"
 	"github.com/urfave/cli/v3"
 	"k8s.io/client-go/dynamic"
 )
@@ -67,7 +68,8 @@ func convertAction(ctx context.Context, c *cli.Command) error {
 
 	// Get and validate mode flag
 	mode := c.String("mode")
-	if mode != v1alpha1.PolicyModeMonitor && mode != v1alpha1.PolicyModeProtect {
+	if mode != agentv1.PolicyMode_POLICY_MODE_MONITOR.String() &&
+		mode != agentv1.PolicyMode_POLICY_MODE_PROTECT.String() {
 		return fmt.Errorf("invalid mode %q: must be 'monitor' or 'protect'", mode)
 	}
 
